@@ -12,7 +12,7 @@ In this project, I cleaned and validated policy and claims data, found what driv
 
 **Python Notebook (Part A):** [Click Here](./Insurance_Pricing_Analysis.ipynb)
 
-**Power BI Dashboard (Part B):** [PDF (all pages)](./powerbi/Insurance_Pricing_Dashboard.pdf) · [.pbix file](./powerbi/Insurance_Pricing_Dashboard.pbix) · [Dashboard overview](#power-bi-dashboard-part-b)
+**Power BI Dashboard (Part B):** [PDF (all pages)](./Insurance_Dashboard.pdf) · [.pbix file](./Insurance_Dashboard.pbix) · [Dashboard overview](#power-bi-dashboard-part-b)
 
 ---
 
