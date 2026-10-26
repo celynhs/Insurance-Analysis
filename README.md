@@ -2,17 +2,17 @@
 
 End-to-end pricing analysis of 678,013 French motor insurance policies in two parts: risk modelling and a technical premium in **Python**, and a pricing adequacy dashboard in **Power BI**.
 
-In this project, I cleaned and validated policy and claims data, found what drives how often customers claim and how much their claims cost, tested which statistical models fit the data, built a risk-based price for every policy, challenged it with a machine-learning model, and measured how much premium is shifted between customers under simpler tariffs.
+In this project, I cleaned and validated policy and claims data, found what drives how often customers claim and how much their claims cost, tested which statistical models fit the data, built a risk-based price for every policy, challenged it with a machine-learning model, and measured how much premium is shifted between customers under simpler tariffs. I then built a five-page Power BI dashboard so pricing managers can explore the results themselves.
 
 > **Business context:** I approached this as a pricing analyst at a motor insurer. Management suspects that some customers pay far less than they cost while others pay far more. Overcharged low-risk customers leave for competitors and undercharged high-risk customers stay, so the portfolio gets steadily worse (adverse selection).
 
 > **Note on the data:** the dataset contains claims but **no premiums**. To measure cross-subsidy, I compared three simulated tariffs: a flat price, a bonus-malus-only price (treated as the "current tariff") and the risk-based GLM price. All three are set to collect the same total, so they differ only in *who* pays.
 
-**Tools:** Python (pandas, NumPy, SciPy, statsmodels, scikit-learn, Matplotlib) in Google Colab (Part A) · Power BI Desktop (Part B)
+**Tools:** Python (pandas, NumPy, SciPy, statsmodels, scikit-learn, Matplotlib) in Google Colab (Part A) · Power BI Desktop (Power Query, DAX, star schema data model) (Part B)
 
 **Python Notebook (Part A):** [Click Here](./Insurance_Pricing_Analysis.ipynb)
 
-**Power BI Dashboard (Part B):** *In progress*
+**Power BI Dashboard (Part B):** [PDF (all pages)](./powerbi/Insurance_Pricing_Dashboard.pdf) · [.pbix file](./powerbi/Insurance_Pricing_Dashboard.pbix) · [Dashboard overview](#power-bi-dashboard-part-b)
 
 ---
 
@@ -32,6 +32,13 @@ In this project, I cleaned and validated policy and claims data, found what driv
     - [3. Choosing the right models](#3-choosing-the-right-models)
     - [4. Risk-based technical premium and GBM challenger](#4-risk-based-technical-premium-and-gbm-challenger)
     - [5. Pricing adequacy and cross-subsidy](#5-pricing-adequacy-and-cross-subsidy)
+  - [Power BI dashboard (Part B)](#power-bi-dashboard-part-b)
+    - [Data model](#data-model)
+    - [Page 1: Portfolio Overview](#page-1-portfolio-overview)
+    - [Page 2: Risk Drivers](#page-2-risk-drivers)
+    - [Page 3: Model Performance](#page-3-model-performance)
+    - [Page 4: Pricing Adequacy and Cross-Subsidy](#page-4-pricing-adequacy-and-cross-subsidy)
+    - [Page 5: Risk-Based Pricing](#page-5-risk-based-pricing)
   - [Recommendations](#recommendations)
   - [Limitations](#limitations)
   - [Repository structure](#repository-structure)
@@ -52,7 +59,7 @@ In this project, I cleaned and validated policy and claims data, found what driv
 
 | Area | Headline |
 |---|---|
-| **Portfolio** | 678,013 policies covering 358,361 policy-years; 95% of policies had no claim. Claim costs are extremely skewed: **median EUR 1,172 vs mean EUR 2,266**, and the part of claims above EUR 16,451 (the top 1%) makes up **30.7% of total claim cost**. |
+| **Portfolio** | 678,013 policies covering 358,360 policy-years; 95% of policies had no claim. Claim costs are extremely skewed: **median EUR 1,172 vs mean EUR 2,266**, and the part of claims above EUR 16,451 (the top 1%) makes up **30.7% of total claim cost**. |
 | **Risk drivers** | **Vehicle age, bonus-malus and driver age** drive how often customers claim (spreads of 4.81×, 2.77× and 1.80×). How much a claim costs barely varies between customers: only driver age and region matter, and by at most 1.35×. |
 | **Models** | A **negative binomial GLM** for claim counts (mild overdispersion) and a **Gamma GLM** for claim costs, which predicts the average cost within 0.2%. The lognormal model fitted the shape of costs better but **overstated the average by 8.9%**, so it was rejected. |
 | **Technical premium** | Expected claims cost ranges from **EUR 112 to EUR 735 per year** (5th to 95th percentile, 6.6×). On unseen policies, actual ÷ expected total cost is **0.985**, and actual cost rises **6.4× from the safest to the riskiest 10%**. |
@@ -310,6 +317,74 @@ All three tariffs collect the same **EUR 84.8M**. The flat tariff charges everyo
 
 ---
 
+## Power BI dashboard (Part B)
+
+📊 [Open the dashboard as a PDF](./powerbi/Insurance_Pricing_Dashboard.pdf) · [Download the .pbix](./powerbi/Insurance_Pricing_Dashboard.pbix) (open with the free Power BI Desktop)
+
+The dashboard turns the notebook's results into five pages a pricing manager can explore: switch between tariffs, pick any rating factor, and see who pays for whom. It reads the CSV files exported at the end of the notebook (Section 7).
+
+| Page | Business question | What a stakeholder can do |
+|---|---|---|
+| 1. Portfolio Overview | Q1: What does the portfolio look like? | Filter by region, area, driver age and fuel; see claim frequency, cost per claim and cost concentration |
+| 2. Risk Drivers | Q2: What drives frequency and severity? | Pick any rating factor and compare actual vs predicted claims |
+| 3. Model Performance | Q4: Does the premium predict and rank risk? | See the GLM's rating factor multipliers, its accuracy on unseen policies, and where the GBM does better |
+| 4. Pricing Adequacy and Cross-Subsidy | Q5: Who is subsidised, and by how much? | Switch between the flat, bonus-malus and GLM tariffs and see the cross-subsidy by segment |
+| 5. Risk-Based Pricing | Q5: What happens if we move to the GLM? | See how many customers' prices would rise or fall, and the risk of doing nothing |
+
+### Data model
+
+![Power BI data model](images/pbi_data_model.png)
+
+- **Star schema:** one fact table (`Fact_Policy`, 678,013 rows, one per policy) connected to nine dimension tables (driver age, bonus-malus, vehicle age, vehicle power, brand, fuel, area, density, region). Each dimension has a sort-order column, so bands always display in their natural order.
+- **Separate summary tables** hold results that only Python can produce: GLM relativities, the GLM vs GBM comparison, lift and double-lift deciles, the adverse selection scenario and claim cost concentration.
+- **33+ DAX measures**, created in bulk with a TMDL script and grouped into display folders: portfolio KPIs, model predictions, tariffs, cross-subsidy, test-set loss ratios and dislocation.
+- **Interactivity:** a **tariff selector** (one set of visuals switches between flat, bonus-malus and GLM pricing) and a **rating-factor field parameter** (one chart switches between all nine factors).
+- **Checked against the notebook:** total premium (EUR 84,791,890), premium shifted (EUR 14,988,050) and test-set loss ratios match the Python results.
+
+### Page 1: Portfolio Overview
+
+![Page 1: Portfolio Overview](images/pbi_page1_portfolio.png)
+
+- **KPI cards:** policies, policy-years, claims, claim frequency, average cost per claim and expected claims cost per policy-year.
+- **Frequency by region** and the **portfolio mix by bonus-malus level**, showing that most insured time is at the maximum bonus.
+- **Claim cost concentration:** the share of total cost coming from the largest claims, which is why large claims are priced separately.
+
+### Page 2: Risk Drivers
+
+![Page 2: Risk Drivers](images/pbi_page2_risk_drivers.png)
+
+- **One-way charts for any rating factor:** insured time (bars) with actual and model-predicted claim frequency (lines). The two lines track closely, showing the model follows the real pattern.
+- **Cost per claim by factor:** changes far less between groups than frequency does, so most price differences come from how often customers claim.
+- **Driver age × bonus-malus heatmap:** frequency rises with bonus-malus at every age, and young drivers claim more at the same bonus-malus level. This justifies the interaction in the model.
+
+### Page 3: Model Performance
+
+![Page 3: Model Performance](images/pbi_page3_model_performance.png)
+
+- **Accuracy:** on unseen policies, actual claims cost is 0.985 times the predicted cost.
+- **Rating factor multipliers:** how the frequency and severity models price each group (1.00 = the reference customer).
+- **Lift chart:** actual claims cost rises from the safest to the riskiest 10% in line with the prediction.
+- **GLM vs GBM:** the GBM ranks risk better (Gini 0.350 vs 0.298), and the double-lift chart shows it is closer to actual cost where the two disagree, mainly for new vehicles.
+
+### Page 4: Pricing Adequacy and Cross-Subsidy
+
+![Page 4: Pricing Adequacy and Cross-Subsidy](images/pbi_page4_cross_subsidy.png)
+
+- **Tariff selector and KPI cards:** under the bonus-malus tariff, EUR 15.0M a year (17.7% of premium) is shifted between customers; 48.6% of policy-years are overcharged by more than 20%.
+- **"Who pays for whom?":** premium minus expected claims cost for each group of the chosen factor. New vehicles receive a subsidy of EUR 9.6M a year, while customers at the maximum bonus pay EUR 4.2M more than they cost. Under the GLM tariff every bar is zero, because each group pays its expected cost.
+- **Fair-share bubble chart:** each group's share of premium vs its share of expected claims cost; groups below the diagonal are subsidised.
+- **Loss ratio by risk decile (actual claims, unseen policies):** rises steeply under the flat and bonus-malus tariffs but stays near 1.00 under the GLM.
+
+### Page 5: Risk-Based Pricing
+
+![Page 5: Risk-Based Pricing](images/pbi_page5_risk_based_pricing.png)
+
+- **Price changes if the insurer moved from the bonus-malus tariff to the GLM:** 39.4% of customers would get a price cut of more than 20%, and 17.5% would face a rise of more than 20%.
+- **Which groups would pay more:** new vehicles would see the largest increase (about +243% on average), so changes should be phased in with caps.
+- **What-if table:** if customers overcharged by more than 20% left for a risk-based competitor, the remaining book would need a 29.4% price rise to break even.
+
+---
+
 ## Recommendations
 
 **Pricing**
@@ -350,12 +425,15 @@ All three tariffs collect the same **EUR 84.8M**. The flat tariff charges everyo
 Insurance-Pricing-Analysis/
 ├── README.md
 ├── Insurance_Pricing_Analysis.ipynb
-├── powerbi/            (Part B, in progress)
+├── powerbi/
+│   ├── Insurance_Pricing_Dashboard.pbix
+│   └── Insurance_Pricing_Dashboard.pdf
 └── images/
-    └── ins_*.png
+    ├── ins_*.png        (notebook charts)
+    └── pbi_*.png        (dashboard screenshots)
 ```
 
-*The data is not stored in the repository; the notebook loads it directly from OpenML.*
+*The data is not stored in the repository; the notebook loads it directly from OpenML, and Section 7 of the notebook exports the CSV files the dashboard reads.*
 
 ---
 
