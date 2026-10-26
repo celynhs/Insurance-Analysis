@@ -12,7 +12,7 @@ In this project, I cleaned and validated policy and claims data, found what driv
 
 **Python Notebook (Part A):** [Click Here](./Insurance_Pricing_Analysis.ipynb)
 
-**Power BI Dashboard (Part B):** [PDF (all pages)](./Insurance_Dashboard.pdf) · [.pbix file](./Insurance_Dashboard.pbix) · [Dashboard overview](#power-bi-dashboard-part-b)
+**Power BI Dashboard (Part B):** [PDF (all pages)](./Insurance_Dashboard.pdf) · [Dashboard overview](#power-bi-dashboard-part-b)
 
 ---
 
@@ -319,7 +319,7 @@ All three tariffs collect the same **EUR 84.8M**. The flat tariff charges everyo
 
 ## Power BI dashboard (Part B)
 
-📊 [Open the dashboard as a PDF](./powerbi/Insurance_Pricing_Dashboard.pdf) · [Download the .pbix](./powerbi/Insurance_Pricing_Dashboard.pbix) (open with the free Power BI Desktop)
+📊 [Open the dashboard as a PDF](./powerbi/Insurance_Pricing_Dashboard.pdf)
 
 The dashboard turns the notebook's results into five pages a pricing manager can explore: switch between tariffs, pick any rating factor, and see who pays for whom. It reads the CSV files exported at the end of the notebook (Section 7).
 
@@ -343,7 +343,7 @@ The dashboard turns the notebook's results into five pages a pricing manager can
 
 ### Page 1: Portfolio Overview
 
-![Page 1: Portfolio Overview](images/pbi_page1_portfolio.png)
+![Page 1: Portfolio Overview](images/pbi_page1.png)
 
 - **KPI cards:** policies, policy-years, claims, claim frequency, average cost per claim and expected claims cost per policy-year.
 - **Frequency by region** and the **portfolio mix by bonus-malus level**, showing that most insured time is at the maximum bonus.
@@ -351,7 +351,7 @@ The dashboard turns the notebook's results into five pages a pricing manager can
 
 ### Page 2: Risk Drivers
 
-![Page 2: Risk Drivers](images/pbi_page2_risk_drivers.png)
+![Page 2: Risk Drivers](images/pbi_page2.png)
 
 - **One-way charts for any rating factor:** insured time (bars) with actual and model-predicted claim frequency (lines). The two lines track closely, showing the model follows the real pattern.
 - **Cost per claim by factor:** changes far less between groups than frequency does, so most price differences come from how often customers claim.
@@ -359,7 +359,7 @@ The dashboard turns the notebook's results into five pages a pricing manager can
 
 ### Page 3: Model Performance
 
-![Page 3: Model Performance](images/pbi_page3_model_performance.png)
+![Page 3: Model Performance](images/pbi_page3.png)
 
 - **Accuracy:** on unseen policies, actual claims cost is 0.985 times the predicted cost.
 - **Rating factor multipliers:** how the frequency and severity models price each group (1.00 = the reference customer).
@@ -368,7 +368,7 @@ The dashboard turns the notebook's results into five pages a pricing manager can
 
 ### Page 4: Pricing Adequacy and Cross-Subsidy
 
-![Page 4: Pricing Adequacy and Cross-Subsidy](images/pbi_page4_cross_subsidy.png)
+![Page 4: Pricing Adequacy and Cross-Subsidy](images/pbi_page4.png)
 
 - **Tariff selector and KPI cards:** under the bonus-malus tariff, EUR 15.0M a year (17.7% of premium) is shifted between customers; 48.6% of policy-years are overcharged by more than 20%.
 - **"Who pays for whom?":** premium minus expected claims cost for each group of the chosen factor. New vehicles receive a subsidy of EUR 9.6M a year, while customers at the maximum bonus pay EUR 4.2M more than they cost. Under the GLM tariff every bar is zero, because each group pays its expected cost.
@@ -377,7 +377,7 @@ The dashboard turns the notebook's results into five pages a pricing manager can
 
 ### Page 5: Risk-Based Pricing
 
-![Page 5: Risk-Based Pricing](images/pbi_page5_risk_based_pricing.png)
+![Page 5: Risk-Based Pricing](images/pbi_page5.png)
 
 - **Price changes if the insurer moved from the bonus-malus tariff to the GLM:** 39.4% of customers would get a price cut of more than 20%, and 17.5% would face a rise of more than 20%.
 - **Which groups would pay more:** new vehicles would see the largest increase (about +243% on average), so changes should be phased in with caps.
