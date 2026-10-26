@@ -425,9 +425,7 @@ The dashboard turns the notebook's results into five pages a pricing manager can
 Insurance-Pricing-Analysis/
 ├── README.md
 ├── Insurance_Pricing_Analysis.ipynb
-├── powerbi/
-│   ├── Insurance_Pricing_Dashboard.pbix
-│   └── Insurance_Pricing_Dashboard.pdf
+├── Insurance_Pricing_Dashboard.pdf
 └── images/
     ├── ins_*.png        (notebook charts)
     └── pbi_*.png        (dashboard screenshots)
