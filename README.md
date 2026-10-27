@@ -381,7 +381,7 @@ The dashboard turns the notebook's results into five pages a pricing manager can
 
 - **Price changes if the insurer moved from the bonus-malus tariff to the GLM:** 39.4% of customers would get a price cut of more than 20%, and 17.5% would face a rise of more than 20%.
 - **Which groups would pay more:** new vehicles would see the largest increase (about +243% on average), so changes should be phased in with caps.
-- **What-if table:** if customers overcharged by more than 20% left for a risk-based competitor, the remaining book would need a 29.4% price rise to break even.
+- **What-if table:** based on bonus-malus tariff, if customers overcharged by more than 20% left for a risk-based competitor, the remaining book would need a 29.4% price rise to break even.
 
 ---
 
