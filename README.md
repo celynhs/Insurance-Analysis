@@ -319,7 +319,7 @@ All three tariffs collect the same **EUR 84.8M**. The flat tariff charges everyo
 
 ## Power BI dashboard (Part B)
 
-📊 [Open the dashboard as a PDF](./powerbi/Insurance_Pricing_Dashboard.pdf)
+📊 [Open the dashboard as a PDF](./Insurance_Pricing_Dashboard.pdf)
 
 The dashboard turns the notebook's results into five pages a pricing manager can explore: switch between tariffs, pick any rating factor, and see who pays for whom. It reads the CSV files exported at the end of the notebook (Section 7).
 
