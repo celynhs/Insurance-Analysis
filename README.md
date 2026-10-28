@@ -10,7 +10,7 @@ In this project, I cleaned and validated policy and claims data, found what driv
 
 **Tools:** Python (pandas, NumPy, SciPy, statsmodels, scikit-learn, Matplotlib) in Google Colab (Part A) · Power BI Desktop (Power Query, DAX, star schema data model) (Part B)
 
-**Python Notebook (Part A):** [Click Here](./Insurance_Pricing_Analysis.ipynb)
+**Python Notebook (Part A):** [Click Here](./Insurance_Analysis.ipynb)
 
 **Power BI Dashboard (Part B):** [PDF (all pages)](./Insurance_Dashboard.pdf) · [Dashboard overview](#power-bi-dashboard-part-b)
 
@@ -424,8 +424,8 @@ The dashboard turns the notebook's results into five pages a pricing manager can
 ```
 Insurance-Pricing-Analysis/
 ├── README.md
-├── Insurance_Pricing_Analysis.ipynb
-├── Insurance_Pricing_Dashboard.pdf
+├── Insurance_Analysis.ipynb
+├── Insurance_Dashboard.pdf
 └── images/
     ├── ins_*.png        (notebook charts)
     └── pbi_*.png        (dashboard screenshots)
